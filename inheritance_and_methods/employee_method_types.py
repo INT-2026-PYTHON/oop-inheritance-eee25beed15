@@ -96,3 +96,55 @@ is_valid_salary("abc")  -> False
 =================================================
 
 """
+class Employee:
+    company = "Acme Corp"
+    raise_pct = 5
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    # Instance Method
+    def apply_raise(self):
+        self.salary += self.salary * Employee.raise_pct / 100
+
+    # Class Method
+    @classmethod
+    def set_raise_percentage(cls, new_pct):
+        cls.raise_pct = new_pct
+
+    @classmethod
+    def from_string(cls, csv_line):
+        name, salary = csv_line.split(",")
+        return cls(name, float(salary))
+
+    # Static Method
+    @staticmethod
+    def is_valid_salary(amount):
+        return isinstance(amount, (int, float)) and amount > 0
+
+
+# Driver Code
+e1 = Employee("Alice", 100000)
+e2 = Employee("Bob", 80000)
+e3 = Employee.from_string("Carol,75000")
+
+# Apply 5% raise
+for emp in [e1, e2, e3]:
+    emp.apply_raise()
+
+# Change raise percentage to 10%
+Employee.set_raise_percentage(10)
+
+# Apply 10% raise
+for emp in [e1, e2, e3]:
+    emp.apply_raise()
+
+# Print employee details
+for emp in [e1, e2, e3]:
+    print(f"{emp.name}: {emp.salary}")
+
+# Test static method
+print(Employee.is_valid_salary(50000))
+print(Employee.is_valid_salary(-100))
+print(Employee.is_valid_salary("abc"))
